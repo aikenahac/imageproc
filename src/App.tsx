@@ -88,6 +88,7 @@ function App() {
 
   const clear = () => {
     setStack([]);
+    setBrightness(1);
     apply();
   };
 

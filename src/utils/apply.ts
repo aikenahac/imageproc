@@ -47,24 +47,6 @@ export function applyFilters(
         const unsharped = unsharping(data, width);
         convertToOriginal(unsharped, data);
         break;
-      case 'red-cr':
-      case 'green-cr':
-      case 'blue-cr':
-        removeColorChannels(data, {
-          red: e.split('-')[0] === 'red' ? true : false,
-          green: e.split('-')[0] === 'green' ? true : false,
-          blue: e.split('-')[0] === 'blue' ? true : false,
-        });
-        break;
-      case 'red-ce':
-      case 'green-ce':
-      case 'blue-ce':
-        enhanceColorChannel(data, {
-          red: e.split('-')[0] === 'red' ? true : false,
-          green: e.split('-')[0] === 'green' ? true : false,
-          blue: e.split('-')[0] === 'blue' ? true : false,
-        });
-        break;
       case 'laplacian':
         const applied = applyMatrix(data, width, [
           [0, 1, 0],
@@ -88,6 +70,24 @@ export function applyFilters(
 
         const sum = imageSum(vertical, horizontal);
         convertToOriginal(sum, data);
+        break;
+      case 'red-cr':
+      case 'green-cr':
+      case 'blue-cr':
+        removeColorChannels(data, {
+          red: e.split('-')[0] === 'red' ? true : false,
+          green: e.split('-')[0] === 'green' ? true : false,
+          blue: e.split('-')[0] === 'blue' ? true : false,
+        });
+        break;
+      case 'red-ce':
+      case 'green-ce':
+      case 'blue-ce':
+        enhanceColorChannel(data, {
+          red: e.split('-')[0] === 'red' ? true : false,
+          green: e.split('-')[0] === 'green' ? true : false,
+          blue: e.split('-')[0] === 'blue' ? true : false,
+        });
         break;
     }
   });
