@@ -40,39 +40,42 @@ function App() {
   const apply = () => {
     setLoading(true);
     console.log(stack);
-    const image = imageRef.current;
-    const canvas = canvasRef.current;
 
-    if (!canvas || !imageUrl || !image) return;
+    setTimeout(() => {
+      const image = imageRef.current;
+      const canvas = canvasRef.current;
 
-    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+      if (!canvas || !imageUrl || !image) return;
 
-    if (!ctx) return;
+      const ctx = canvas.getContext('2d', { willReadFrequently: true });
 
-    canvas.height = image.naturalHeight;
-    canvas.width = image.naturalWidth;
+      if (!ctx) return;
 
-    ctx?.drawImage(image, 0, 0, image.naturalWidth, image.naturalHeight);
+      canvas.height = image.naturalHeight;
+      canvas.width = image.naturalWidth;
 
-    const imageData = ctx.getImageData(
-      0,
-      0,
-      image.naturalWidth,
-      image.naturalHeight,
-    );
+      ctx?.drawImage(image, 0, 0, image.naturalWidth, image.naturalHeight);
 
-    const data = imageData.data;
+      const imageData = ctx.getImageData(
+        0,
+        0,
+        image.naturalWidth,
+        image.naturalHeight,
+      );
 
-    applyFilters(data, image, stack, brightness);
+      const data = imageData.data;
 
-    ctx.putImageData(imageData, 0, 0);
+      applyFilters(data, image, stack, brightness);
 
-    let img = new Image();
-    img.id = 'img2';
-    img.src = canvas.toDataURL();
-    setOutputUrl(canvas.toDataURL());
+      ctx.putImageData(imageData, 0, 0);
 
-    setLoading(false);
+      let img = new Image();
+      img.id = 'img2';
+      img.src = canvas.toDataURL();
+      setOutputUrl(canvas.toDataURL());
+
+      setLoading(false);
+    }, 10);
   };
 
   const undo = () => {

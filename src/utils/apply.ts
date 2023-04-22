@@ -56,9 +56,9 @@ export function applyFilters(
           blue: e.split('-')[0] === 'blue' ? true : false,
         });
         break;
-      case 'red-ec':
-      case 'green-ec':
-      case 'blue-ec':
+      case 'red-ce':
+      case 'green-ce':
+      case 'blue-ce':
         enhanceColorChannel(data, {
           red: e.split('-')[0] === 'red' ? true : false,
           green: e.split('-')[0] === 'green' ? true : false,
