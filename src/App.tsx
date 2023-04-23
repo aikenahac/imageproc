@@ -1,8 +1,10 @@
 import { useState, useRef } from 'react';
-import { applyFilters } from './utils/apply';
+import { applyFilters } from './utils/functions/apply';
+import { Histogram } from './utils/histogram/histogram';
 
 function App() {
   const [imageUrl, setImageUrl] = useState<string>();
+  const [imgWidth, setImgWidth] = useState<number>();
   const imageRef = useRef<HTMLImageElement>(null);
 
   const [outputUrl, setOutputUrl] = useState<string>();
@@ -15,6 +17,8 @@ function App() {
   const [loading, setLoading] = useState(false);
 
   const [stack, setStack] = useState<string[]>([]);
+
+  const [data, setData] = useState<Uint8ClampedArray>();
 
   const onImageSelect = (event: any) => {
     if (outputUrl) {
@@ -63,9 +67,11 @@ function App() {
         image.naturalHeight,
       );
 
-      const data = imageData.data;
+      const d = imageData.data;
+      setData(d);
+      setImgWidth(image.naturalWidth);
 
-      applyFilters(data, image, stack, brightness);
+      applyFilters(d, image, stack, brightness);
 
       ctx.putImageData(imageData, 0, 0);
 
@@ -226,6 +232,8 @@ function App() {
           Apply
         </button>
       </div>
+      <p className="font-bold text-xl">Histogram</p>
+      <Histogram data={data} width={imgWidth} />
     </div>
   );
 }
