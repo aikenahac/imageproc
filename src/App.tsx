@@ -110,106 +110,161 @@ function App() {
         <img src={outputUrl} className="max-w-2xl	max-h-96" ref={outputRef} />
         <canvas ref={canvasRef} hidden />
       </div>
-      <p className="font-bold text-xl">Actions</p>
-      <div className="grid gap-4 grid-cols-4">
-        <button
-          onClick={() => addFilter('grayscale')}
-          className={`btn ${!imageUrl ? 'btn-disabled' : ''}`}
-        >
-          Grayscale
-        </button>
-        <button
-          onClick={() => addFilter('threshold')}
-          className={`btn ${!imageUrl ? 'btn-disabled' : ''}`}
-        >
-          Threshold
-        </button>
-        <button
-          onClick={() => addFilter('box-blur')}
-          className={`btn ${!imageUrl ? 'btn-disabled' : ''}`}
-        >
-          Box Blur
-        </button>
-        <button
-          onClick={() => addFilter('sharpening')}
-          className={`btn ${!imageUrl ? 'btn-disabled' : ''}`}
-        >
-          Sharpening
-        </button>
-        <button
-          onClick={() => addFilter('unsharp')}
-          className={`btn ${!imageUrl ? 'btn-disabled' : ''}`}
-        >
-          Unsharp Masking
-        </button>
-        <button
-          onClick={() => addFilter('laplacian')}
-          className={`btn ${!imageUrl ? 'btn-disabled' : ''}`}
-        >
-          Laplacian
-        </button>
-        <button
-          onClick={() => addFilter('sobel')}
-          className={`btn ${!imageUrl ? 'btn-disabled' : ''}`}
-        >
-          Sobel
-        </button>
-        {/* <button className={`btn ${!imageUrl ? 'btn-disabled' : ''}`}>
-          Median
-        </button> */}
+      <div className="flex justify-between items-center w-80w">
+        <div className="flex flex-col justify-center items-start space-y-4">
+          <p className="font-bold text-xl">Actions</p>
+          <div className="grid gap-4 grid-cols-4">
+            <button
+              onClick={() => addFilter('grayscale')}
+              className={`btn ${!imageUrl ? 'btn-disabled' : ''}`}
+            >
+              Grayscale
+            </button>
+            <button
+              onClick={() => addFilter('threshold')}
+              className={`btn ${!imageUrl ? 'btn-disabled' : ''}`}
+            >
+              Threshold
+            </button>
+            <button
+              onClick={() => addFilter('box-blur')}
+              className={`btn ${!imageUrl ? 'btn-disabled' : ''}`}
+            >
+              Box Blur
+            </button>
+            <button
+              onClick={() => addFilter('sharpening')}
+              className={`btn ${!imageUrl ? 'btn-disabled' : ''}`}
+            >
+              Sharpening
+            </button>
+            <button
+              onClick={() => addFilter('unsharp')}
+              className={`btn ${!imageUrl ? 'btn-disabled' : ''}`}
+            >
+              Unsharp Masking
+            </button>
+            <button
+              onClick={() => addFilter('laplacian')}
+              className={`btn ${!imageUrl ? 'btn-disabled' : ''}`}
+            >
+              Laplacian
+            </button>
+            <button
+              onClick={() => addFilter('sobel')}
+              className={`btn ${!imageUrl ? 'btn-disabled' : ''}`}
+            >
+              Sobel
+            </button>
+          </div>
+          <p className="font-bold text-xl">Color Channel Removal</p>
+          <div className="flex flex-row space-x-4">
+            <button
+              onClick={() => addFilter('red-cr')}
+              className={`btn ${!imageUrl ? 'btn-disabled' : ''}`}
+            >
+              Red
+            </button>
+            <button
+              onClick={() => addFilter('green-cr')}
+              className={`btn ${!imageUrl ? 'btn-disabled' : ''}`}
+            >
+              Green
+            </button>
+            <button
+              onClick={() => addFilter('blue-cr')}
+              className={`btn ${!imageUrl ? 'btn-disabled' : ''}`}
+            >
+              Blue
+            </button>
+          </div>
+          <p className="font-bold text-xl">Color Channel Enhancing</p>
+          <div className="flex flex-row space-x-4">
+            <button
+              onClick={() => addFilter('red-ce')}
+              className={`btn ${!imageUrl ? 'btn-disabled' : ''}`}
+            >
+              Red
+            </button>
+            <button
+              onClick={() => addFilter('green-ce')}
+              className={`btn ${!imageUrl ? 'btn-disabled' : ''}`}
+            >
+              Green
+            </button>
+            <button
+              onClick={() => addFilter('blue-ce')}
+              className={`btn ${!imageUrl ? 'btn-disabled' : ''}`}
+            >
+              Blue
+            </button>
+          </div>
+          <p className="font-bold text-xl">Brightness [{brightness}]</p>
+          <input
+            type="range"
+            min={0}
+            max={2}
+            step={0.01}
+            value={brightness}
+            onChange={onBrightnessChange}
+            className="range range-primary w-96"
+          />
+        </div>
+        <div>
+          <p className="font-bold text-xl">Applied Filters</p>
+          <div className="overflow-y-auto h-96 overflow-x-hidden">
+            <table className="table table-compact w-96">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Filter</th>
+                </tr>
+              </thead>
+              <tbody>
+                {stack.map((el, i) => {
+                  let filter = el;
+
+                  switch (el) {
+                    case 'red-cr':
+                      filter = 'Red Channel Removal';
+                      break;
+                    case 'green-cr':
+                      filter = 'Green Channel Removal';
+                      break;
+                    case 'blue-cr':
+                      filter = 'Blue Channel Removal';
+                      break;
+                    case 'red-ce':
+                      filter = 'Red Channel Enhancing';
+                      break;
+                    case 'green-ce':
+                      filter = 'Green Channel Enhancing';
+                      break;
+                    case 'blue-ce':
+                      filter = 'Blue Channel Enhancing';
+                      break;
+                    case 'box-blur':
+                      filter = 'Box blur';
+                      break;
+                    default:
+                      const initial = el.charAt(0).toUpperCase();
+                      const rest = el.slice(1);
+
+                      filter = initial + rest;
+                  }
+
+                  return (
+                    <tr key={i}>
+                      <th>{i}</th>
+                      <td>{filter}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
-      <p className="font-bold text-xl">Color Channel Removal</p>
-      <div className="flex flex-row space-x-4">
-        <button
-          onClick={() => addFilter('red-cr')}
-          className={`btn ${!imageUrl ? 'btn-disabled' : ''}`}
-        >
-          Red
-        </button>
-        <button
-          onClick={() => addFilter('green-cr')}
-          className={`btn ${!imageUrl ? 'btn-disabled' : ''}`}
-        >
-          Green
-        </button>
-        <button
-          onClick={() => addFilter('blue-cr')}
-          className={`btn ${!imageUrl ? 'btn-disabled' : ''}`}
-        >
-          Blue
-        </button>
-      </div>
-      <p className="font-bold text-xl">Color Channel Enhancing</p>
-      <div className="flex flex-row space-x-4">
-        <button
-          onClick={() => addFilter('red-ce')}
-          className={`btn ${!imageUrl ? 'btn-disabled' : ''}`}
-        >
-          Red
-        </button>
-        <button
-          onClick={() => addFilter('green-ce')}
-          className={`btn ${!imageUrl ? 'btn-disabled' : ''}`}
-        >
-          Green
-        </button>
-        <button
-          onClick={() => addFilter('blue-ce')}
-          className={`btn ${!imageUrl ? 'btn-disabled' : ''}`}
-        >
-          Blue
-        </button>
-      </div>
-      <p className="font-bold text-xl">Brightness [{brightness}]</p>
-      <input
-        type="range"
-        min={0}
-        max={2}
-        step={0.01}
-        value={brightness}
-        onChange={onBrightnessChange}
-        className="range range-primary w-96"
-      />
       <div className="flex flex-row space-x-4">
         <button
           className={`btn btn-error ${!imageUrl ? 'btn-disabled' : ''}`}

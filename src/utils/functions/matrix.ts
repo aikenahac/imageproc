@@ -41,6 +41,8 @@ export function applyMatrix(
 
         color[key] = Math.floor(value);
 
+        console.log(color[key]);
+
         if (value > 255) color[key] = 255;
         else if (value < 0) color[key] = 0;
       }
