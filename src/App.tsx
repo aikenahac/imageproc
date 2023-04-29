@@ -26,6 +26,8 @@ function App() {
       if (output) output.src = '';
     }
     if (event.target.files && event.target.files[0]) {
+      setStack([]);
+      setBrightness(1);
       setImageUrl(URL.createObjectURL(event.target.files[0]));
     }
   };
@@ -38,7 +40,7 @@ function App() {
     console.log(`adding ${filter}`);
     const tmpStack = stack;
     tmpStack.push(filter);
-    setStack(tmpStack);
+    setStack([...tmpStack]);
   };
 
   const apply = () => {
@@ -88,7 +90,7 @@ function App() {
     const tmp = stack;
     tmp.pop();
 
-    setStack(tmp);
+    setStack([...tmp]);
     apply();
   };
 
