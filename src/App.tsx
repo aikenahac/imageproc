@@ -112,7 +112,9 @@ function App() {
   };
 
   const clear = () => {
-    setStack([]);
+    const tmp = stack;
+    tmp.length = 0;
+    setStack([...tmp]);
     setBrightness(1);
     apply();
   };
