@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
-import { applyFilters } from './utils/functions/apply';
 import { Histogram } from './utils/histogram/histogram';
+import { WorkerData } from './utils/types';
 
 function App() {
   const [imageUrl, setImageUrl] = useState<string>();
@@ -43,11 +43,17 @@ function App() {
     setStack([...tmpStack]);
   };
 
-  const apply = () => {
+  const apply = async () => {
     setLoading(true);
     console.log(stack);
 
-    setTimeout(() => {
+    await useWorker();
+
+    setLoading(false);
+  };
+
+  const useWorker = async () => {
+    new Promise(() => {
       const image = imageRef.current;
       const canvas = canvasRef.current;
 
@@ -69,21 +75,32 @@ function App() {
         image.naturalHeight,
       );
 
-      const d = imageData.data;
-      setData(d);
       setImgWidth(image.naturalWidth);
+      const worker = new Worker(new URL('./utils/worker.ts', import.meta.url), {
+        type: 'module',
+      });
 
-      applyFilters(d, image, stack, brightness);
+      const d: WorkerData = {
+        data: imageData.data,
+        width: image.naturalWidth,
+        brightness: brightness,
+        stack: stack,
+      };
 
-      ctx.putImageData(imageData, 0, 0);
+      worker.postMessage(d);
 
-      let img = new Image();
-      img.id = 'img2';
-      img.src = canvas.toDataURL();
-      setOutputUrl(canvas.toDataURL());
+      worker.onmessage = (e: MessageEvent<Uint8ClampedArray>) => {
+        setData(e.data);
+        imageData.data.set(e.data);
 
-      setLoading(false);
-    }, 10);
+        ctx.putImageData(imageData, 0, 0);
+
+        let img = new Image();
+        img.id = 'img2';
+        img.src = canvas.toDataURL();
+        setOutputUrl(canvas.toDataURL());
+      };
+    });
   };
 
   const undo = () => {
@@ -281,9 +298,7 @@ function App() {
           Undo
         </button>
         <button
-          className={`btn btn-primary ${loading ? 'loading' : ''} ${
-            !imageUrl ? 'btn-disabled' : ''
-          }`}
+          className={`btn btn-primary ${!imageUrl ? 'btn-disabled' : ''}`}
           onClick={() => apply()}
         >
           Apply

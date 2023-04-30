@@ -1,4 +1,5 @@
-import { Pixel, convertTo2D } from './converts';
+import { Pixel } from '../types';
+import { convertTo2D } from './converts';
 
 export function applyMatrix(
   data: Uint8ClampedArray | undefined,
@@ -40,8 +41,6 @@ export function applyMatrix(
         if (key === 'A') continue;
 
         color[key] = Math.floor(value);
-
-        console.log(color[key]);
 
         if (value > 255) color[key] = 255;
         else if (value < 0) color[key] = 0;

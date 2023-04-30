@@ -1,4 +1,4 @@
-import { Pixel } from './converts';
+import { Pixel } from '../types';
 
 export function imageSubtract(img1: Pixel[][], img2: Pixel[][] | undefined) {
   if (!img2) return;

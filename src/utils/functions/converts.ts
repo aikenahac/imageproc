@@ -1,9 +1,4 @@
-export interface Pixel {
-  [R: string]: number;
-  G: number;
-  B: number;
-  A: number;
-}
+import { Pixel } from '../types';
 
 export function convertToOriginal(
   pixels: Pixel[][] | undefined,

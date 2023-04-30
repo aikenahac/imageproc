@@ -10,13 +10,11 @@ import { setThreshold } from './threshold';
 
 export function applyFilters(
   data: Uint8ClampedArray | undefined,
-  image: HTMLImageElement,
+  width: number,
   stack: string[],
   brightness: number,
 ) {
   if (!data) return;
-
-  const width = image.naturalWidth;
 
   stack.forEach((e) => {
     switch (e) {
@@ -29,7 +27,7 @@ export function applyFilters(
       case 'box-blur':
         const blur = boxBlur(
           data,
-          image.naturalWidth,
+          width,
           [
             [1, 2, 1],
             [2, 4, 2],

@@ -1,8 +1,4 @@
-interface Colours {
-  [red: string]: boolean;
-  green: boolean;
-  blue: boolean;
-}
+import { Colours } from '../types';
 
 export function removeColorChannels(data: Uint8ClampedArray, colours: Colours) {
   const arr = ['red', 'green', 'blue'];

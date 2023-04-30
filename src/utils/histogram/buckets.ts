@@ -1,16 +1,5 @@
 import { convertTo2D } from '../functions/converts';
-
-export interface Buckets {
-  [R: string]: any[];
-  G: any[];
-  B: any[];
-}
-
-export interface Count {
-  [R: string]: number;
-  G: number;
-  B: number;
-}
+import { Buckets, Count } from '../types';
 
 export function createBucketsByColor(
   data: Uint8ClampedArray,

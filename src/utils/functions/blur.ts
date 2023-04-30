@@ -1,4 +1,5 @@
-import { Pixel, convertTo2D } from './converts';
+import { Pixel } from '../types';
+import { convertTo2D } from './converts';
 
 export function boxBlur(
   data: Uint8ClampedArray,
