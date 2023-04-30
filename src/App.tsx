@@ -14,8 +14,6 @@ function App() {
 
   const [brightness, setBrightness] = useState(1);
 
-  const [loading, setLoading] = useState(false);
-
   const [stack, setStack] = useState<string[]>([]);
 
   const [data, setData] = useState<Uint8ClampedArray>();
@@ -44,12 +42,9 @@ function App() {
   };
 
   const apply = async () => {
-    setLoading(true);
     console.log(stack);
 
     await useWorker();
-
-    setLoading(false);
   };
 
   const useWorker = async () => {
