@@ -6,6 +6,8 @@ export default {
       spacing: {
         128: '32rem',
         '80w': '80vw',
+        '100h': '100vh',
+        '100w': '100vw',
       },
     },
   },
