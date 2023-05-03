@@ -115,7 +115,7 @@ function App() {
   };
 
   return (
-    <div className="h-100h w-100w">
+    <div className="h-100h w-100w flex flex-col">
       <div className="flex flex-col justify-center items-start pt-4 pl-4 pb-4 space-y-4">
         <input
           type="file"
@@ -305,6 +305,7 @@ function App() {
         <p className="font-bold text-xl">Histogram</p>
         <Histogram data={data} width={imgWidth} />
       </div>
+      <div className="grow"></div>
       <footer className="footer footer-center p-4 bg-base-300 text-base-content">
         <div>
           <p>
