@@ -247,6 +247,26 @@ function App() {
                 <></>
               )}
             </div>
+            <div className="flex flex-row space-x-4">
+              <button
+                className={`btn btn-error ${!imageUrl ? 'btn-disabled' : ''}`}
+                onClick={() => clear()}
+              >
+                Clear
+              </button>
+              <button
+                className={`btn btn-primary ${!imageUrl ? 'btn-disabled' : ''}`}
+                onClick={() => undo()}
+              >
+                Undo
+              </button>
+              <button
+                className={`btn btn-primary ${!imageUrl ? 'btn-disabled' : ''}`}
+                onClick={() => apply()}
+              >
+                Apply
+              </button>
+            </div>
             <p className="font-bold text-xl">Actions</p>
             <div className="grid gap-4 grid-cols-4">
               <button
@@ -433,26 +453,6 @@ function App() {
               </table>
             </div>
           </div>
-        </div>
-        <div className="flex flex-row space-x-4">
-          <button
-            className={`btn btn-error ${!imageUrl ? 'btn-disabled' : ''}`}
-            onClick={() => clear()}
-          >
-            Clear
-          </button>
-          <button
-            className={`btn btn-primary ${!imageUrl ? 'btn-disabled' : ''}`}
-            onClick={() => undo()}
-          >
-            Undo
-          </button>
-          <button
-            className={`btn btn-primary ${!imageUrl ? 'btn-disabled' : ''}`}
-            onClick={() => apply()}
-          >
-            Apply
-          </button>
         </div>
         <p className="font-bold text-xl">Histogram</p>
         <Histogram data={data} width={imgWidth} />
