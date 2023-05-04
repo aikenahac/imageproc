@@ -44,7 +44,14 @@ function App() {
     const size = parseInt(event.target.value);
     let tmp = [...matrix];
 
-    tmp = Array(size).fill(Array(size).fill(0));
+    const matrixSizes: Record<number, number[][]> = {
+      3: emptyMatrix3x3,
+      5: emptyMatrix5x5,
+      7: emptyMatrix7x7,
+      9: emptyMatrix9x9,
+    };
+
+    tmp = matrixSizes[size];
 
     setMatrix(tmp);
     setMatrixSize(event.target.value);
@@ -405,3 +412,39 @@ function App() {
 }
 
 export default App;
+
+const emptyMatrix3x3 = [
+  [0, 0, 0],
+  [0, 0, 0],
+  [0, 0, 0],
+];
+
+const emptyMatrix5x5 = [
+  [0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0],
+];
+
+const emptyMatrix7x7 = [
+  [0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0],
+];
+
+const emptyMatrix9x9 = [
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+];
