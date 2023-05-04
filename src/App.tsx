@@ -13,6 +13,12 @@ function App() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const [brightness, setBrightness] = useState(1);
+  const [matrixSize, setMatrixSize] = useState(3);
+  const [matrix, setMatrix] = useState([
+    [0, 0, 0],
+    [0, 0, 0],
+    [0, 0, 0],
+  ]);
 
   const [stack, setStack] = useState<string[]>([]);
 
@@ -32,6 +38,16 @@ function App() {
 
   const onBrightnessChange = (event: any) => {
     setBrightness(event.target.value);
+  };
+
+  const onMatrixSizeChange = (event: any) => {
+    const size = parseInt(event.target.value);
+    let tmp = [...matrix];
+
+    tmp = Array(size).fill(Array(size).fill(0));
+
+    setMatrix(tmp);
+    setMatrixSize(event.target.value);
   };
 
   const addFilter = (filter: string) => {
@@ -80,6 +96,7 @@ function App() {
         width: image.naturalWidth,
         brightness: brightness,
         stack: stack,
+        matrix: matrix,
       };
 
       worker.postMessage(d);
@@ -112,6 +129,40 @@ function App() {
     setStack([...tmp]);
     setBrightness(1);
     apply();
+  };
+
+  const generateColumns = (n: number, row: number) => {
+    const cols = [];
+
+    for (let c = 0; c < n; c++) {
+      cols.push(
+        <td key={`r${row}c${c}`}>
+          <input
+            type="number"
+            placeholder="0"
+            value={matrix[row][c]}
+            onChange={(e) => {
+              const tmp = [...matrix];
+              tmp[row][c] = parseInt(e.target.value);
+              setMatrix(tmp);
+            }}
+            className="input w-16 mr-1 mb-1"
+          />
+        </td>,
+      );
+    }
+
+    return cols;
+  };
+
+  const renderMatrix = (n: number) => {
+    const rows = [];
+
+    for (let r = 0; r < n; r++) {
+      rows.push(<tr key={`r${r}`}>{generateColumns(n, r)}</tr>);
+    }
+
+    return rows;
   };
 
   return (
@@ -216,6 +267,37 @@ function App() {
                 Blue
               </button>
             </div>
+            <div className="flex flex-col space-y-4">
+              <p className="font-bold text-xl">
+                Custom Matrix Input [{matrixSize}x{matrixSize}]
+              </p>
+              <div>
+                <input
+                  type="range"
+                  min={3}
+                  max={9}
+                  step={2}
+                  value={matrixSize}
+                  onChange={onMatrixSizeChange}
+                  className="range range-primary"
+                />
+                <div className="w-full flex justify-between text-xs px-2">
+                  <span>|</span>
+                  <span>|</span>
+                  <span>|</span>
+                  <span>|</span>
+                </div>
+              </div>
+            </div>
+            <table className="table-auto">
+              <tbody>{renderMatrix(matrixSize)}</tbody>
+            </table>
+            <button
+              className="btn btn-primary"
+              onClick={() => addFilter('matrix')}
+            >
+              Add Matrix
+            </button>
             <p className="font-bold text-xl">Brightness [{brightness}]</p>
             <input
               type="range"
@@ -262,6 +344,9 @@ function App() {
                         break;
                       case 'box-blur':
                         filter = 'Box blur';
+                        break;
+                      case 'matrix':
+                        filter = `Custom ${matrixSize}x${matrixSize} matrix`;
                         break;
                       default:
                         const initial = el.charAt(0).toUpperCase();

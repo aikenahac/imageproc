@@ -13,6 +13,7 @@ export function applyFilters(
   width: number,
   stack: string[],
   brightness: number,
+  matrix: number[][],
 ) {
   if (!data) return;
 
@@ -86,6 +87,10 @@ export function applyFilters(
           green: e.split('-')[0] === 'green' ? true : false,
           blue: e.split('-')[0] === 'blue' ? true : false,
         });
+        break;
+      case 'matrix':
+        const m = applyMatrix(data, width, matrix);
+        convertToOriginal(m, data);
         break;
     }
   });

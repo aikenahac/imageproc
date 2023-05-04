@@ -3,6 +3,7 @@ export interface WorkerData {
   brightness: number;
   data: Uint8ClampedArray | undefined;
   stack: string[];
+  matrix: number[][];
 }
 
 export interface Colours {

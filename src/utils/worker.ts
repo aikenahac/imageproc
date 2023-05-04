@@ -2,12 +2,13 @@ import { applyFilters } from './functions/apply';
 import { WorkerData } from './types';
 
 self.onmessage = (e: MessageEvent<WorkerData>) => {
-  let width = e.data.width;
-  let brightness = e.data.brightness;
-  let data = e.data.data;
-  let stack = e.data.stack;
+  const width = e.data.width;
+  const brightness = e.data.brightness;
+  const data = e.data.data;
+  const stack = e.data.stack;
+  const matrix = e.data.matrix;
 
-  applyFilters(data, width, stack, brightness);
+  applyFilters(data, width, stack, brightness, matrix);
 
   self.postMessage(data);
 };
