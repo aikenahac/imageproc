@@ -381,7 +381,10 @@ function App() {
             </table>
             <button
               className={`btn btn-primary ${!imageUrl ? 'btn-disabled' : ''}`}
-              onClick={() => addFilter('matrix')}
+              onClick={() => {
+                console.log(matrix);
+                addFilter('matrix');
+              }}
             >
               Add Matrix
             </button>
