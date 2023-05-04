@@ -317,7 +317,7 @@ function App() {
             />
           </div>
           <div>
-            <p className="font-bold text-xl">Applied Filters</p>
+            <p className="font-bold text-xl mb-1">Applied Filters</p>
             <div className="overflow-y-auto h-96 overflow-x-hidden">
               <table className="table table-compact w-96">
                 <thead>
