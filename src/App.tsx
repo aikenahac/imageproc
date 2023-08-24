@@ -1,19 +1,11 @@
 import { useState, useRef } from 'react';
 import { Histogram } from './utils/histogram/histogram';
 import { WorkerData } from './utils/types';
-import ReactCrop, { Crop, PixelCrop } from 'react-image-crop';
-import 'react-image-crop/dist/ReactCrop.css';
-import { canvasPreview } from './utils/functions/canvas_prev';
-import { toBlob } from './utils/functions/blob';
 
 function App() {
   const [imageUrl, setImageUrl] = useState<string>();
   const [imgWidth, setImgWidth] = useState<number>();
   const imageRef = useRef<HTMLImageElement>(null);
-
-  const [crop, setCrop] = useState<Crop>();
-  const [completedCrop, setCompletedCrop] = useState<PixelCrop>();
-  const [isCropping, toggleCrop] = useState(false);
 
   const [outputUrl, setOutputUrl] = useState<string>();
   const outputRef = useRef<HTMLImageElement>(null);
@@ -41,7 +33,6 @@ function App() {
       setStack([]);
       setBrightness(1);
       setImageUrl(URL.createObjectURL(event.target.files[0]));
-      setOutputUrl(URL.createObjectURL(event.target.files[0]));
     }
   };
 
@@ -81,7 +72,7 @@ function App() {
 
   const useWorker = async () => {
     new Promise(() => {
-      const image = outputRef.current;
+      const image = imageRef.current;
       const canvas = canvasRef.current;
 
       if (!canvas || !imageUrl || !image) return;
@@ -145,7 +136,6 @@ function App() {
     setStack([...tmp]);
     setBrightness(1);
     apply();
-    setOutputUrl(imageUrl);
   };
 
   const generateColumns = (n: number, row: number) => {
@@ -182,22 +172,6 @@ function App() {
     return rows;
   };
 
-  const applyCrop = async () => {
-    const canvas = document.createElement('canvas');
-    const image = imageRef.current;
-    canvasPreview(image, canvas, completedCrop);
-
-    const blob = await toBlob(canvas);
-
-    if (!blob) {
-      console.error('Failed to create blob');
-      return;
-    }
-
-    setOutputUrl(URL.createObjectURL(blob));
-    toggleCrop(false);
-  };
-
   return (
     <div className="h-100h w-100w flex flex-col">
       <div className="flex flex-col justify-center items-start pt-4 pl-4 pb-4 space-y-4">
@@ -207,46 +181,12 @@ function App() {
           className="file-input file-input-bordered file-input-primary w-full max-w-xs"
         />
         <div className="flex space-x-8">
-          {isCropping ? (
-            <ReactCrop
-              className="max-w-2xl	max-h-96"
-              crop={crop}
-              onChange={(c) => setCrop(c)}
-              onComplete={(c) => setCompletedCrop(c)}
-            >
-              <img
-                src={imageUrl}
-                className="max-w-2xl	max-h-96"
-                ref={imageRef}
-              />
-            </ReactCrop>
-          ) : (
-            <img src={imageUrl} className="max-w-2xl	max-h-96" ref={imageRef} />
-          )}
-
+          <img src={imageUrl} className="max-w-2xl	max-h-96" ref={imageRef} />
           <img src={outputUrl} className="max-w-2xl	max-h-96" ref={outputRef} />
           <canvas ref={canvasRef} hidden />
         </div>
         <div className="flex justify-between items-center w-80w">
           <div className="flex flex-col justify-center items-start space-y-4">
-            <div>
-              <button
-                onClick={() => toggleCrop(!isCropping)}
-                className={`btn btn-primary ${!imageUrl ? 'btn-disabled' : ''}`}
-              >
-                {isCropping ? 'Stop' : 'Crop'}
-              </button>
-              {isCropping ? (
-                <button
-                  onClick={() => applyCrop()}
-                  className="btn btn-primary ml-4"
-                >
-                  Apply
-                </button>
-              ) : (
-                <></>
-              )}
-            </div>
             <div className="flex flex-row space-x-4">
               <button
                 className={`btn btn-error ${!imageUrl ? 'btn-disabled' : ''}`}
